@@ -37,6 +37,7 @@ async function sendMessage(req, res) {
     // Update the chat's messages and latestMessage
     chat.messages.push(message);
     chat.latestMessage = message._id;
+    chat.lastText = text;
     await chat.save();
 
     // Update the User models with the chat information
@@ -67,7 +68,6 @@ async function getUserChats(req, res) {
 
     // Retrieve the user's chats
     const userChats = await Chat.find({ users: userId }).populate('users', 'username'); // Populate the usernames of the chat participants
-
     res.json({ userChats });
   } catch (error) {
     console.error('Error retrieving user chats:', error);

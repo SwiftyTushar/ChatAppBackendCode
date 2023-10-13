@@ -17,6 +17,9 @@ const chatSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Message', // Reference to the latest Message model
   },
+  lastText: {
+    type: String, // Adding a new key lastText of type string
+  },
 });
 
 module.exports = mongoose.model('Chat', chatSchema);
