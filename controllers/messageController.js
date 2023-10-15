@@ -38,6 +38,7 @@ async function sendMessage(req, res) {
     chat.messages.push(message);
     chat.latestMessage = message._id;
     chat.lastText = text;
+    chat.lastMessageTime = Date.now();
     await chat.save();
 
     // Update the User models with the chat information

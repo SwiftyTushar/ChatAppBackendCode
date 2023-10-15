@@ -20,6 +20,10 @@ const chatSchema = new mongoose.Schema({
   lastText: {
     type: String, // Adding a new key lastText of type string
   },
+  lastMessageTime: {
+    type: Number,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Chat', chatSchema);
