@@ -47,7 +47,7 @@ app.post('/message/send-message', messageController.sendMessage);
 
 // Define the API route to get user's chats
 app.get('/chats/:userId', messageController.getUserChats);
-
+app.post('/chats/fetch/messages', messageController.fetchMessagesByChatID);
 // Define the API route to get user's messages
 //app.get('messages/:userId', messageController.getUserMessages);
 

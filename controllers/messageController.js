@@ -39,6 +39,8 @@ async function sendMessage(req, res) {
     chat.latestMessage = message._id;
     chat.lastText = text;
     chat.lastMessageTime = Date.now();
+    chat.isLatestMessageRead = false;
+    chat.lastMessageSentBy = senderId;
     await chat.save();
 
     // Update the User models with the chat information
@@ -100,6 +102,48 @@ async function getUserMessages(req, res) {
     res.status(500).json({ error: 'Error retrieving user messages' });
   }
 }
+
+async function fetchMessagesByChatID(req,res) {
+  try{
+    const chatID = req.body.chatID;
+    const currentUserID = req.body.currentUserID;
+    const recipientId = req.body.recipientId;
+    console.log(`REQUEEST------- ${chatID}`);
+    const chat = await Chat.findById(chatID);
+
+    if(!chat){
+      return res.status(404)
+    }
+    const messages = await Message.find({ _id: { $in: chat.messages } })
+    .sort({ timestamp: 1 }) // Sort messages by timestamp in ascending order
+    .populate('sender', 'username') // Populate the sender's username
+    .populate('recipient', 'username'); 
+    console.log("Hello World!!!");
+    let lastMSG = messages[messages.length - 1];
+    console.log(`GOT THE DATA---- ${lastMSG} chat ${chat}`)
+    if (lastMSG.sender._id == recipientId && lastMSG.isMessageRead == false){
+      lastMSG.isMessageRead = true
+      chat.isLatestMessageRead = true
+      await lastMSG.save();
+      await chat.save();
+      console.log(`I am here`);
+    }
+    // for(const message of messages){
+    //   if(message.sender == recipientId && message.isMessageRead == false){
+    //     const msgID = message.id;
+    //     console.log(`Messages Data ID: ${msgID}`);
+    //     await Chat.findByIdAndUpdate(chatID, {isLatestMessageRead: true});
+    //     await Message.findByIdAndUpdate(msgID, { isLatestMessageRead: true });
+    //   }
+    // }
+    console.log(`After the messages`)
+    res.json({messages})
+  } catch(error){
+    console.error('Error retrieving chat messages:', error);
+    res.status(500).json({ error: 'Error retrieving chat messages' });
+  }
+}
+
 async function getMessagesByChatID(req, res) {
   try {
     const chatID = req.params.chatID; // Assuming you pass the chat's ID as a route parameter
@@ -123,7 +167,7 @@ async function getMessagesByChatID(req, res) {
     res.status(500).json({ error: 'Error retrieving chat messages' });
   }
 }
-module.exports = { sendMessage, getUserChats, getUserMessages,getMessagesByChatID };
+module.exports = { sendMessage, getUserChats, getUserMessages,getMessagesByChatID,fetchMessagesByChatID};
 
 
 

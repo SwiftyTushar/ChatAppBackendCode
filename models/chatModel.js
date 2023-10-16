@@ -24,6 +24,14 @@ const chatSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isLatestMessageRead:{
+    type: Boolean,
+    default: true,
+  },
+  lastMessageSentBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  }
 });
 
 module.exports = mongoose.model('Chat', chatSchema);
