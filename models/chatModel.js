@@ -30,7 +30,7 @@ const chatSchema = new mongoose.Schema({
   },
   lastMessageSentBy: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: false
   }
 });
 

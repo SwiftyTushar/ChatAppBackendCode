@@ -2,11 +2,12 @@ const Message = require('../models/messageModel');
 const User = require('../models/User');
 const Chat = require('../models/chatModel');
 
+
 // Function to send a message to a specific user
 async function sendMessage(req, res) {
   try {
     const { senderId, recipientId, text } = req.body;
-
+    console.log(`HELqwejrqweorjqwo`);
     // Check if the sender and recipient exist
     const sender = await User.findById(senderId);
     const recipient = await User.findById(recipientId);
@@ -19,9 +20,10 @@ async function sendMessage(req, res) {
     let chat = await Chat.findOne({
       users: { $all: [senderId, recipientId] },
     });
-
+    console.log(`MODELS---- ${senderId} recep ${recipientId}`);
     if (!chat) {
       chat = new Chat({ users: [senderId, recipientId], messages: [] });
+      chat.lastMessageTime = Date.now();
       await chat.save();
     }
 

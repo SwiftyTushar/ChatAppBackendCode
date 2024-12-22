@@ -1,2 +1,1 @@
-const currentTimeMillis = new Date().getTime();
-console.log(currentTimeMillis);
+console.log("Hello World");
