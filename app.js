@@ -14,7 +14,7 @@ const app = express();
 const httpServer = createServer(app);
 
 
-mongoose.connect('mongodb+srv://swiftytushar:oSISwXNAEFiVx0WF@cluster0.xqk2xot.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://<your_username>:<your_password>@cluster0.xqk2xot.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
